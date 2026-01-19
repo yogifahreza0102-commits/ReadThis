@@ -51,7 +51,6 @@ button{
 }
 button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 
-/* MAIN BUTTON */
 .main-btn{
   padding:12px 32px;
   border-radius:30px;
@@ -139,7 +138,6 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 <script>
 let currentPage = 1;
 
-/* DATA */
 const emojis = {
   Happy:"😊", Sad:"😔", Angry:"😡", Fear:"😨",
   Worried:"😟", Regret:"😞", Lonely:"😔"
@@ -369,26 +367,23 @@ Lonely:[
 
 };
 
-/* PAGE CONTROL */
 function goTo(n){
   document.getElementById(`page${currentPage}`).classList.remove("active");
   document.getElementById(`page${n}`).classList.add("active");
   currentPage = n;
 }
 
-/* SELECT EMOTION */
 function selectEmotion(emotion){
+  const msg =
+    messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
+
   document.getElementById("emotionEmoji").innerText = emojis[emotion];
   document.getElementById("emotionTitle").innerText = emotion;
-  document.getElementById("emotionMessage").innerText =
-    messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
+  document.getElementById("emotionMessage").innerText = "“" + msg + "”";
+
   goTo(3);
 }
 </script>
 
 </body>
 </html>
-
-
-
-
