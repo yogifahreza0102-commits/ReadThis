@@ -9,7 +9,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 html,body{width:100%;height:100%;background:#111;color:#fff}
 
-/* PAGE */
 .page{
   position:absolute;
   inset:0;
@@ -21,13 +20,8 @@ html,body{width:100%;height:100%;background:#111;color:#fff}
   transition:.8s;
   padding:20px;
 }
-.page.active{
-  opacity:1;
-  pointer-events:auto;
-  z-index:2;
-}
+.page.active{opacity:1;pointer-events:auto;z-index:2}
 
-/* CARD */
 .content{
   width:100%;
   max-width:460px;
@@ -37,11 +31,9 @@ html,body{width:100%;height:100%;background:#111;color:#fff}
   text-align:center;
 }
 
-/* TEXT */
 h1{font-size:2.1rem;margin-bottom:16px}
 p{font-size:1.05rem;line-height:1.7;margin-bottom:20px}
 
-/* BUTTON */
 button{
   border:none;
   background:rgba(255,255,255,.25);
@@ -50,46 +42,36 @@ button{
   transition:.3s;
 }
 button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
+.main-btn{padding:12px 32px;border-radius:30px}
 
-.main-btn{
-  padding:12px 32px;
-  border-radius:30px;
-}
-
-/* EMOTION GRID */
-.choice-btns{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  align-items:center;
-}
-.row{
-  display:grid;
-  grid-template-columns:repeat(4,80px);
-  gap:14px;
-}
-.row.bottom{
-  grid-template-columns:repeat(3,80px);
-}
+.choice-btns{display:flex;flex-direction:column;gap:14px;align-items:center}
+.row{display:grid;grid-template-columns:repeat(4,80px);gap:14px}
+.row.bottom{grid-template-columns:repeat(3,80px)}
 
 .emotion-btn{
-  width:80px;
-  height:80px;
-  border-radius:16px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-size:.8rem;
+  width:80px;height:80px;border-radius:16px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  font-size:.8rem
 }
-.emotion-btn span{
-  font-size:1.6rem;
-  margin-bottom:4px;
-}
+.emotion-btn span{font-size:1.6rem;margin-bottom:4px}
 
-/* RESULT */
 #emotionEmoji{font-size:3rem;margin-bottom:10px}
 #emotionMessage{font-size:1.15rem;line-height:1.7}
+
+/* POPUP */
+.popup{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  display:flex;justify-content:center;align-items:center;
+  opacity:0;pointer-events:none;transition:.3s;z-index:10
+}
+.popup.active{opacity:1;pointer-events:auto}
+.popup-box{
+  background:#1c1c1c;border-radius:16px;padding:24px;
+  max-width:320px;text-align:center
+}
+.popup-box span{font-size:2rem;display:block;margin-bottom:10px}
+.popup-box p{font-size:.95rem;line-height:1.6;margin-bottom:18px}
+.popup-box button{padding:8px 22px;border-radius:20px}
 </style>
 </head>
 
@@ -108,7 +90,6 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 <div class="page" id="page2">
   <div class="content">
     <h1>Apa perasaan kamu sekarang dedek??</h1>
-
     <div class="choice-btns">
       <div class="row">
         <button class="emotion-btn" onclick="selectEmotion('Happy')"><span>😊</span>Happy</button>
@@ -135,8 +116,18 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   </div>
 </div>
 
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <span>😒</span>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">iya deh</button>
+  </div>
+</div>
+
 <script>
 let currentPage = 1;
+const LOCK_DURATION = 5 * 60 * 1000;
 
 const emojis = {
   Happy:"😊", Sad:"😔", Angry:"😡", Fear:"😨",
@@ -367,15 +358,39 @@ Lonely:[
 
 };
 
+// PAGE
 function goTo(n){
   document.getElementById(`page${currentPage}`).classList.remove("active");
   document.getElementById(`page${n}`).classList.add("active");
   currentPage = n;
 }
 
+// POPUP
+function showPopup(text){
+  document.getElementById("popupText").innerText = text;
+  document.getElementById("popup").classList.add("active");
+}
+function closePopup(){
+  document.getElementById("popup").classList.remove("active");
+}
+
+// EMOTION LOGIC
 function selectEmotion(emotion){
-  const msg =
-    messages[emotion][Math.floor(Math.random() * messages[emotion].length)];
+  const lastEmotion = localStorage.getItem("lastEmotion");
+  const lastTime = localStorage.getItem("lastEmotionTime");
+  const now = Date.now();
+
+  if(lastEmotion && lastTime){
+    if(now - lastTime < LOCK_DURATION && emotion !== lastEmotion){
+      showPopup(`Loh kan udah pilih "${lastEmotion}", kok pilih yang lain`);
+      return;
+    }
+  }
+
+  localStorage.setItem("lastEmotion", emotion);
+  localStorage.setItem("lastEmotionTime", now);
+
+  const msg = messages[emotion][Math.floor(Math.random()*messages[emotion].length)];
 
   document.getElementById("emotionEmoji").innerText = emojis[emotion];
   document.getElementById("emotionTitle").innerText = emotion;
@@ -387,6 +402,3 @@ function selectEmotion(emotion){
 
 </body>
 </html>
-
-
-
