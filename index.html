@@ -41,8 +41,9 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 
 /* EMOTION GRID */
 .choice-btns{display:flex;flex-direction:column;gap:14px;align-items:center}
-.row{display:grid;grid-template-columns:repeat(4,80px);gap:14px}
+.row{display:grid;grid-template-columns:repeat(4,80px);gap:14px;margin-bottom:14px}
 .row.bottom{grid-template-columns:repeat(3,80px)}
+
 .emotion-btn{
   width:80px;height:80px;border-radius:16px;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
@@ -73,15 +74,17 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 
 /* WHATSAPP BOX */
 .whatsapp-box{
-  margin-top:26px;
+  display:block;
+  margin-top:20px;
   padding:18px;
   border-radius:16px;
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.1);
+  text-align:center;
 }
 .whatsapp-box p{
   font-size:.95rem;
   line-height:1.6;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 .wa-btn{
   display:inline-block;
@@ -114,6 +117,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 <div class="page" id="page2">
   <div class="content">
     <h1>Apa perasaan kamu sekarang dedek?</h1>
+
     <div class="choice-btns">
       <div class="row">
         <button class="emotion-btn" onclick="selectEmotion('Happy')"><span>😊</span>Happy</button>
@@ -135,6 +139,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
          href="https://wa.me/6282232923136?text=aku%20punya%20sesuatu%20yang%20pengen%20aku%20sampein"
          target="_blank">💬 Chat aku di WhatsApp</a>
     </div>
+
   </div>
 </div>
 
@@ -161,7 +166,6 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 let currentPage = 1;
 const LOCK_DURATION = 5 * 60 * 1000;
 
-/* fallback memory */
 let memoryEmotion = null;
 let memoryTime = null;
 
@@ -401,30 +405,21 @@ function goTo(n){
   currentPage = n;
 }
 
-/* POPUP */
 function showPopup(text){
   document.getElementById("popupText").innerText = text;
   document.getElementById("popup").classList.add("active");
 }
-function closePopup(){
-  document.getElementById("popup").classList.remove("active");
-}
+function closePopup(){document.getElementById("popup").classList.remove("active");}
 
-/* EMOTION LOGIC – FIXED */
 function selectEmotion(emotion){
   let lastEmotion = null;
   let lastTime = null;
-
   try{
     lastEmotion = localStorage.getItem("lastEmotion");
     lastTime = localStorage.getItem("lastEmotionTime");
-  }catch(e){
-    lastEmotion = memoryEmotion;
-    lastTime = memoryTime;
-  }
+  }catch(e){ lastEmotion = memoryEmotion; lastTime = memoryTime; }
 
   const now = Date.now();
-
   if(lastEmotion && lastTime){
     if(now - Number(lastTime) < LOCK_DURATION && emotion !== lastEmotion){
       showPopup(`Loh kan udah pilih "${lastEmotion}", kok pilih yang lain`);
@@ -435,23 +430,15 @@ function selectEmotion(emotion){
   try{
     localStorage.setItem("lastEmotion", emotion);
     localStorage.setItem("lastEmotionTime", now);
-  }catch(e){
-    memoryEmotion = emotion;
-    memoryTime = now;
-  }
+  }catch(e){ memoryEmotion = emotion; memoryTime = now; }
 
   const msg = messages[emotion][Math.floor(Math.random()*messages[emotion].length)];
-
   document.getElementById("emotionEmoji").innerText = emojis[emotion];
   document.getElementById("emotionTitle").innerText = emotion;
-  document.getElementById("emotionMessage").innerText = "“" + msg + "”";
+  document.getElementById("emotionMessage").innerText = "“"+msg+"”";
 
   goTo(3);
 }
 </script>
-
 </body>
 </html>
-
-
-
