@@ -4,36 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emotion Messages</title>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 html,body{width:100%;height:100%;background:#111;color:#fff}
 
+/* PAGE */
 .page{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  pointer-events:none;
-  transition:.8s;
-  padding:20px;
+  position:absolute;inset:0;
+  display:flex;justify-content:center;align-items:center;
+  opacity:0;pointer-events:none;transition:.8s;padding:20px
 }
 .page.active{opacity:1;pointer-events:auto;z-index:2}
 
+/* CARD */
 .content{
-  width:100%;
-  max-width:460px;
+  width:100%;max-width:460px;
   background:rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:30px;
+  border-radius:18px;padding:30px;
   text-align:center;
 }
 
+/* TEXT */
 h1{font-size:2.1rem;margin-bottom:16px}
 p{font-size:1.05rem;line-height:1.7;margin-bottom:20px}
 
+/* BUTTON */
 button{
   border:none;
   background:rgba(255,255,255,.25);
@@ -44,10 +39,10 @@ button{
 button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 .main-btn{padding:12px 32px;border-radius:30px}
 
+/* EMOTION GRID */
 .choice-btns{display:flex;flex-direction:column;gap:14px;align-items:center}
 .row{display:grid;grid-template-columns:repeat(4,80px);gap:14px}
 .row.bottom{grid-template-columns:repeat(3,80px)}
-
 .emotion-btn{
   width:80px;height:80px;border-radius:16px;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
@@ -55,6 +50,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 }
 .emotion-btn span{font-size:1.6rem;margin-bottom:4px}
 
+/* EMOTION RESULT */
 #emotionEmoji{font-size:3rem;margin-bottom:10px}
 #emotionMessage{font-size:1.15rem;line-height:1.7}
 
@@ -70,16 +66,39 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   max-width:320px;text-align:center;
   animation:pop .3s ease
 }
-@keyframes pop{
-  from{transform:scale(.85)}
-  to{transform:scale(1)}
-}
+@keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
 .popup-box span{font-size:2rem;display:block;margin-bottom:10px}
 .popup-box p{font-size:.95rem;line-height:1.6;margin-bottom:18px}
 .popup-box button{padding:8px 22px;border-radius:20px}
+
+/* WHATSAPP BOX */
+.whatsapp-box{
+  margin-top:26px;
+  padding:18px;
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+}
+.whatsapp-box p{
+  font-size:.95rem;
+  line-height:1.6;
+  margin-bottom:14px;
+}
+.wa-btn{
+  display:inline-block;
+  padding:10px 22px;
+  border-radius:24px;
+  background:#25D366;
+  color:#111;
+  font-weight:600;
+  text-decoration:none;
+  transition:.3s;
+}
+.wa-btn:hover{
+  background:#1ebe5d;
+  transform:scale(1.05);
+}
 </style>
 </head>
-
 <body>
 
 <!-- PAGE 1 -->
@@ -440,4 +459,5 @@ function selectEmotion(emotion){
 
 </body>
 </html>
+
 
