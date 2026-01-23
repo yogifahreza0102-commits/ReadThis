@@ -99,6 +99,52 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   background:#1ebe5d;
   transform:scale(1.05);
 }
+  
+  /* NOTES BOX */
+.notes-box{
+  margin-top:20px;
+  text-align:left;
+}
+.notes-box label{
+  display:block;
+  font-size:.9rem;
+  margin-bottom:8px;
+  opacity:.8;
+}
+.notes-box textarea{
+  width:100%;
+  min-height:120px;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  resize:none;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  font-size:.95rem;
+  line-height:1.6;
+}
+.notes-box textarea::placeholder{
+  color:rgba(255,255,255,.5);
+}
+
+/* ACTION BUTTONS */
+.action-group{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:14px; /* jarak antar tombol */
+}
+
+/* SAVE BUTTON */
+.save-btn{
+  background:#25D366;
+  color:#111;
+  font-weight:600;
+}
+.save-btn:hover{
+  background:#1ebe5d;
+}
+
 </style>
 </head>
 <body>
@@ -149,8 +195,19 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
     <div id="emotionEmoji"></div>
     <h1 id="emotionTitle"></h1>
     <p id="emotionMessage"></p>
-    <button class="main-btn" onclick="goTo(2)">Gapapa kalau mau pilih lagi</button>
-  </div>
+    <div class="notes-box">
+  <label>Catatan kecil buat diri kamu 💭</label>
+  <textarea id="userNotes"
+    placeholder="Tulis apa pun di sini… nggak harus rapi, nggak harus masuk akal. Ini cuma buat kamu."></textarea>
+</div>
+    <div class="action-group">
+  <button class="main-btn save-btn" onclick="saveToFile()">
+    💾 Simpan catatan ini
+  </button>
+
+  <button class="main-btn" onclick="goTo(2)">
+    Gapapa kalau mau pilih lagi
+  </button>
 </div>
 
 <!-- POPUP -->
@@ -467,7 +524,41 @@ function selectEmotion(emotion){
 
   goTo(3);
 }
+
+function saveToFile(){
+  const emotion = document.getElementById("emotionTitle").innerText;
+  const message = document.getElementById("emotionMessage").innerText;
+  const notes = document.getElementById("userNotes").value || "(tidak ada catatan)";
+  const date = new Date().toLocaleString("id-ID");
+
+  const content = 
+`Tanggal: ${date}
+
+Emosi:
+${emotion}
+
+Pesan:
+${message}
+
+Catatan pribadi:
+${notes}
+`;
+
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `catatan-perasaan-${emotion}-${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 </script>
 </body>
 </html>
+
 
