@@ -42,7 +42,6 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 /* EMOTION GRID */
 .choice-btns{display:flex;flex-direction:column;gap:14px;align-items:center}
 .row{display:grid;grid-template-columns:repeat(4,80px);gap:14px;margin-bottom:14px}
-.row.bottom{grid-template-columns:repeat(3,80px)}
 
 .emotion-btn{
   width:80px;height:80px;border-radius:16px;
@@ -121,7 +120,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
     <div class="choice-btns">
       <div class="row">
         <button class="emotion-btn" onclick="selectEmotion('Happy')"><span>😊</span>Happy</button>
-        <button class="emotion-btn" onclick="selectEmotion('Sad')"><span>😔</span>Sad</button>
+        <button class="emotion-btn" onclick="selectEmotion('Sad')"><span>😢</span>Sad</button>
         <button class="emotion-btn" onclick="selectEmotion('Angry')"><span>😡</span>Angry</button>
         <button class="emotion-btn" onclick="selectEmotion('Fear')"><span>😨</span>Fear</button>
       </div>
@@ -129,6 +128,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
         <button class="emotion-btn" onclick="selectEmotion('Worried')"><span>😟</span>Worried</button>
         <button class="emotion-btn" onclick="selectEmotion('Regret')"><span>😞</span>Regret</button>
         <button class="emotion-btn" onclick="selectEmotion('Lonely')"><span>😔</span>Lonely</button>
+        <button class="emotion-btn" onclick="selectEmotion('Tired')"><span>🥴</span>Tired</button>
       </div>
     </div>
 
@@ -170,8 +170,8 @@ let memoryEmotion = null;
 let memoryTime = null;
 
 const emojis = {
-  Happy:"😊", Sad:"😔", Angry:"😡", Fear:"😨",
-  Worried:"😟", Regret:"😞", Lonely:"😔"
+  Happy:"😊", Sad:"😢", Angry:"😡", Fear:"😨",
+  Worried:"😟", Regret:"😞", Lonely:"😔", Tired:"🥴"
 };
 
 const messages = {
@@ -396,6 +396,34 @@ Lonely:[
 "You are more loved than you think, dedek. Sometimes love is just quiet.",
 ],
 
+Tired:[
+"Capek ya, dedek. You’ve been trying for so long, even when no one really noticed.",
+"It’s okay to feel tired. You don’t have to be strong all the time.",
+"Your body and heart are asking for rest, not for you to give up.",
+"You’ve done enough for today. Seriously. You can stop pushing now.",
+"Being tired doesn’t mean you’re weak, it means you’ve been carrying a lot.",
+"Take a slow breath, dedek. You’re allowed to pause without explaining anything.",
+"You don’t need to fix everything tonight. Some things can wait until you feel better.",
+"Rest is not laziness. It’s how you survive and stay kind to yourself.",
+"Even if today feels unproductive, you’re still valuable.",
+"You’re allowed to slow down. Life isn’t a race, even if it feels like one.",
+"Your exhaustion is valid. Anyone in your place would feel the same.",
+"It’s okay if all you did today was survive. That’s already enough.",
+"You don’t have to prove anything to anyone right now.",
+"Being tired means you care, you try, and you don’t give up easily.",
+"Put your worries down for a bit, dedek. Your shoulders deserve a break.",
+"You’re not falling behind. You’re just resting before continuing.",
+"Some days are for progress, some days are just for breathing. Both matter.",
+"You don’t need to have energy to be worthy of love and care.",
+"Close your eyes for a moment, if you can. Let the noise calm down.",
+"It’s okay to choose rest today. Tomorrow can wait.",
+"You’re still doing your best, even when your best looks quiet.",
+"Being tired doesn’t cancel all the effort you’ve already given.",
+"You’re human, not a machine. You’re allowed to run out of energy.",
+"Let yourself rest without guilt, dedek. You’ve earned it.",
+"This tiredness won’t last forever. You will feel lighter again.",
+],
+
 };
 
 /* PAGE NAV */
@@ -442,3 +470,4 @@ function selectEmotion(emotion){
 </script>
 </body>
 </html>
+
