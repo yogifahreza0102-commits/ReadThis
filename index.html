@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emotion Messages</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<audio id="bgMusic" loop>
+  <source src="romantic.mp3" type="audio/mpeg">
+</audio>
 <style>
 html,body{width:100%;height:100%;background:#111;color:#fff}
 
@@ -214,6 +217,8 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   }
 }
 
+
+  
 </style>
 </head>
 <body>
@@ -223,7 +228,9 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   <div class="content">
     <h1>Halo dedekk ✨</h1>
     <p>Ini tempat kecil yang aku bikin biar kamu bisa jujur sama perasaan kamu sendiri, tanpa dihakimi.</p>
-    <button class="main-btn" onclick="goTo(2)">Mulai</button>
+    <button class="main-btn" onclick="playMusic(); goTo(2)">
+  Mulai
+</button>
   </div>
 </div>
 
@@ -653,7 +660,24 @@ function animateMessage(newText){
   }, 600); // tunggu pesan lama selesai fade out
 }
 
+function playMusic(){
+  const music = document.getElementById("bgMusic");
+  music.volume = 0;
+  music.play().catch(()=>{});
+
+  let vol = 0;
+  const fade = setInterval(() => {
+    if(vol < 0.35){
+      vol += 0.02;
+      music.volume = vol;
+    } else {
+      clearInterval(fade);
+    }
+  }, 120);
+}
+  
 </script>
 </body>
 </html>
+
 
