@@ -4,9 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emotion Messages</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 html,body{width:100%;height:100%;background:#111;color:#fff}
+
+*,
+*::before,
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
 
 /* PAGE */
 .page{
@@ -36,6 +45,17 @@ button{
   cursor:pointer;
   transition:.3s;
 }
+
+/* Samakan font size tombol Lagi & Back */
+.again-btn,
+.back-small{
+  font-size:1rem;
+  line-height:1;
+  padding:12px 32px;
+  color:#fff;
+  font-weight:500;
+}
+
 button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 .main-btn{padding:12px 32px;border-radius:30px}
 
@@ -53,23 +73,6 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 /* EMOTION RESULT */
 #emotionEmoji{font-size:3rem;margin-bottom:10px}
 #emotionMessage{font-size:1.15rem;line-height:1.7}
-
-/* POPUP */
-.popup{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);
-  display:flex;justify-content:center;align-items:center;
-  opacity:0;pointer-events:none;transition:.3s;z-index:10
-}
-.popup.active{opacity:1;pointer-events:auto}
-.popup-box{
-  background:#1c1c1c;border-radius:16px;padding:24px;
-  max-width:320px;text-align:center;
-  animation:pop .3s ease
-}
-@keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
-.popup-box span{font-size:2rem;display:block;margin-bottom:10px}
-.popup-box p{font-size:.95rem;line-height:1.6;margin-bottom:18px}
-.popup-box button{padding:8px 22px;border-radius:20px}
 
 /* WHATSAPP BOX */
 .whatsapp-box{
@@ -127,12 +130,47 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   color:rgba(255,255,255,.5);
 }
 
+/* BACK BUTTON */
+.back-btn{
+  padding:12px 32px;      /* sama dengan main-btn */
+  border-radius:30px;     /* sama dengan main-btn */
+  font-size:1rem;         /* sama */
+  background:rgba(255,255,255,.18);
+  opacity:.9;
+}
+
+.back-btn:hover{
+  background:rgba(255,255,255,.35);
+  transform:scale(1.05);
+}
+
 /* ACTION BUTTONS */
 .action-group{
   margin-top:26px;
   display:flex;
   flex-direction:column;
   gap:14px; /* jarak antar tombol */
+}
+
+/* ACTION ROW WIDTH */
+.action-row{
+  display:flex;
+  gap:12px;
+  width:100%;
+}
+
+/* proporsi tombol bawah */
+.again-btn{
+  flex:2;              /* lebih panjang */
+}
+
+.back-small{
+  flex:1;              /* lebih pendek */
+}
+
+/* pastikan tombol simpan selebar row bawah */
+.action-group > .save-btn{
+  width:100%;
 }
 
 /* SAVE BUTTON */
@@ -143,6 +181,37 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
 }
 .save-btn:hover{
   background:#1ebe5d;
+}
+
+/* MESSAGE ANIMATION – SLOW & CLEAR */
+.fade-message {
+  animation: messageIn 1.1s ease forwards;
+}
+
+.fade-out {
+  animation: messageOut .6s ease forwards;
+}
+
+@keyframes messageOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 </style>
@@ -170,7 +239,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
         <button class="emotion-btn" onclick="selectEmotion('Angry')"><span>😡</span>Angry</button>
         <button class="emotion-btn" onclick="selectEmotion('Fear')"><span>😨</span>Fear</button>
       </div>
-      <div class="row bottom">
+      <div class="row">
         <button class="emotion-btn" onclick="selectEmotion('Worried')"><span>😟</span>Worried</button>
         <button class="emotion-btn" onclick="selectEmotion('Regret')"><span>😞</span>Regret</button>
         <button class="emotion-btn" onclick="selectEmotion('Lonely')"><span>😔</span>Lonely</button>
@@ -185,7 +254,6 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
          href="https://wa.me/6282232923136?text=aku%20punya%20sesuatu%20yang%20pengen%20aku%20sampein"
          target="_blank">💬 Chat aku di WhatsApp</a>
     </div>
-
   </div>
 </div>
 
@@ -201,30 +269,23 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
     placeholder="Tulis apa pun di sini… nggak harus rapi, nggak harus masuk akal. Ini cuma buat kamu."></textarea>
 </div>
     <div class="action-group">
-  <button class="main-btn save-btn" onclick="saveToFile()">
+  <button class="main-btn save-btn" onclick="saveAll()">
     💾 Simpan catatan ini
   </button>
 
-  <button class="main-btn" onclick="goTo(2)">
-    Gapapa kalau mau pilih lagi
+  <div class="action-row">
+  <button class="main-btn again-btn" onclick="changeMessageSameEmotion()">
+    Lagi??
   </button>
-</div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <span>😒</span>
-    <p id="popupText"></p>
-    <button onclick="closePopup()">iya deh</button>
-  </div>
+  <button class="back-btn back-small" onclick="goBackToEmotion()">
+    Back
+  </button>
 </div>
 
 <script>
 let currentPage = 1;
-const LOCK_DURATION = 5 * 60 * 1000;
-
-let memoryEmotion = null;
-let memoryTime = null;
+let activeEmotion = null;
 
 const emojis = {
   Happy:"😊", Sad:"😢", Angry:"😡", Fear:"😨",
@@ -490,39 +551,28 @@ function goTo(n){
   currentPage = n;
 }
 
-function showPopup(text){
-  document.getElementById("popupText").innerText = text;
-  document.getElementById("popup").classList.add("active");
-}
-function closePopup(){document.getElementById("popup").classList.remove("active");}
-
 function selectEmotion(emotion){
-  let lastEmotion = null;
-  let lastTime = null;
-  try{
-    lastEmotion = localStorage.getItem("lastEmotion");
-    lastTime = localStorage.getItem("lastEmotionTime");
-  }catch(e){ lastEmotion = memoryEmotion; lastTime = memoryTime; }
+  activeEmotion = emotion;
 
-  const now = Date.now();
-  if(lastEmotion && lastTime){
-    if(now - Number(lastTime) < LOCK_DURATION && emotion !== lastEmotion){
-      showPopup(`Loh kan udah pilih "${lastEmotion}", kok pilih yang lain`);
-      return;
-    }
-  }
+  const msg = messages[emotion][
+    Math.floor(Math.random() * messages[emotion].length)
+  ];
 
-  try{
-    localStorage.setItem("lastEmotion", emotion);
-    localStorage.setItem("lastEmotionTime", now);
-  }catch(e){ memoryEmotion = emotion; memoryTime = now; }
-
-  const msg = messages[emotion][Math.floor(Math.random()*messages[emotion].length)];
   document.getElementById("emotionEmoji").innerText = emojis[emotion];
   document.getElementById("emotionTitle").innerText = emotion;
-  document.getElementById("emotionMessage").innerText = "“"+msg+"”";
 
   goTo(3);
+  animateMessage(msg); // 🌙 pelan & terasa
+}
+
+function changeMessageSameEmotion(){
+  if(!activeEmotion) return;
+
+  const msg = messages[activeEmotion][
+    Math.floor(Math.random() * messages[activeEmotion].length)
+  ];
+
+  animateMessage(msg); // 🌊 transisi halus
 }
 
 function saveToFile(){
@@ -557,8 +607,53 @@ ${notes}
   URL.revokeObjectURL(url);
 }
 
+function saveNotesToGoogleSheet(){
+  const message = document
+    .getElementById("emotionMessage")
+    .innerText.replace(/“|”/g,"");
+
+  const notes = document.getElementById("userNotes").value.trim();
+
+  if(!notes) return;
+
+  const formData = new FormData();
+  formData.append("message", message);
+  formData.append("notes", notes);
+
+  fetch("https://script.google.com/macros/s/AKfycbziaLxeJldKe248ZxqWoyRd1LIRpK5bshRgiDZCzL8rYnnb84eWP1pBBzYBLpj1Dq87/exec", {
+    method: "POST",
+    body: formData
+  })
+  .catch(() => console.log("Gagal kirim ke Sheet"));
+}
+
+function saveAll(){
+  saveToFile();
+  saveNotesToGoogleSheet(); // ✅ ini nama aslinya
+}
+
+function goBackToEmotion(){
+  document.getElementById("userNotes").value = "";
+  goTo(2);
+}
+
+function animateMessage(newText){
+  const msgEl = document.getElementById("emotionMessage");
+
+  // animasi keluar
+  msgEl.classList.remove("fade-message");
+  msgEl.classList.add("fade-out");
+
+  setTimeout(() => {
+    msgEl.innerText = "“" + newText + "”";
+
+    msgEl.classList.remove("fade-out");
+    void msgEl.offsetWidth; // reflow
+    msgEl.classList.add("fade-message");
+  }, 600); // tunggu pesan lama selesai fade out
+}
+
 </script>
 </body>
 </html>
-
 
