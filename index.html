@@ -264,7 +264,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   <div class="content">
     <h1>Halo dedekk ✨</h1>
     <p>Ini tempat kecil yang aku bikin biar kamu bisa jujur sama perasaan kamu sendiri, tanpa dihakimi.</p>
-    <button class="main-btn" onclick="playMusic(); goTo(2)">
+    <button class="main-btn" onclick="goTo(2)">
   Mulai
 </button>
   </div>
@@ -316,7 +316,7 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
     💾 Simpan catatan ini
   </button>
 
-<div class="whatsapp-box" onclick="openSavedPage()" style="cursor:pointer">
+<div class="whatsapp-box" id="openSavedBtn" style="cursor:pointer">
   <p>Lihat semua perasaan & catatan yang pernah kamu simpan</p>
   <strong>📖 Buka Catatan Kamu</strong>
 </div>
@@ -705,24 +705,17 @@ function renderSavedNotes(){
   });
 }
 
-function playMusic(){
-  const music = document.getElementById("bgMusic");
-  music.volume = 0;
-  music.play().catch(()=>{});
+document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("openSavedBtn");
 
-  let vol = 0;
-  const fade = setInterval(() => {
-    if(vol < 0.35){
-      vol += 0.02;
-      music.volume = vol;
-    } else {
-      clearInterval(fade);
-    }
-  }, 120);
-}
+  if(openBtn){
+    openBtn.addEventListener("click", () => {
+      renderSavedNotes();
+      goTo(4);
+    });
+  }
+});
   
 </script>
 </body>
 </html>
-
-
