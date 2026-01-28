@@ -631,38 +631,6 @@ function changeMessageSameEmotion(){
   animateMessage(msg); // 🌊 transisi halus
 }
 
-function saveToFile(){
-  const emotion = document.getElementById("emotionTitle").innerText;
-  const message = document.getElementById("emotionMessage").innerText;
-  const notes = document.getElementById("userNotes").value || "(tidak ada catatan)";
-  const date = new Date().toLocaleString("id-ID");
-
-  const content = 
-`Tanggal: ${date}
-
-Emosi:
-${emotion}
-
-Pesan:
-${message}
-
-Catatan pribadi:
-${notes}
-`;
-
-  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `catatan-perasaan-${emotion}-${Date.now()}.txt`;
-  document.body.appendChild(a);
-  a.click();
-
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 function saveAll(){
   const data = {
     date: new Date().toLocaleString("id-ID"),
@@ -676,14 +644,11 @@ function saveAll(){
   saved.push(data);
   localStorage.setItem("emotionNotes", JSON.stringify(saved));
 
+  document.getElementById("userNotes").value = "";
+
   alert("Catatan kamu berhasil disimpan 🤍");
 }
-
-function saveAll(){
-  saveToFile();
-  saveNotesToGoogleSheet(); // ✅ ini nama aslinya
-}
-
+  
 function goBackToEmotion(){
   document.getElementById("userNotes").value = "";
   goTo(2);
@@ -753,6 +718,7 @@ function playMusic(){
 </script>
 </body>
 </html>
+
 
 
 
