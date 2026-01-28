@@ -217,6 +217,37 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   }
 }
 
+.saved-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin:20px 0;
+  max-height:360px;
+  overflow-y:auto;
+}
+
+.saved-item{
+  background:rgba(255,255,255,.1);
+  padding:16px;
+  border-radius:14px;
+}
+
+.saved-item h3{
+  font-size:1.05rem;
+  margin-bottom:6px;
+}
+
+.saved-item p{
+  font-size:.95rem;
+  line-height:1.6;
+  opacity:.9;
+}
+
+.saved-item .date{
+  font-size:.75rem;
+  opacity:.6;
+  margin-top:8px;
+}
 
   
 </style>
@@ -280,6 +311,11 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
     💾 Simpan catatan ini
   </button>
 
+<div class="whatsapp-box" onclick="openSavedPage()" style="cursor:pointer">
+  <p>Lihat semua perasaan & catatan yang pernah kamu simpan</p>
+  <strong>📖 Buka Catatan Kamu</strong>
+</div>
+      
   <div class="action-row">
   <button class="main-btn again-btn" onclick="changeMessageSameEmotion()">
     Lagi??
@@ -290,6 +326,19 @@ button:hover{background:rgba(255,255,255,.45);transform:scale(1.05)}
   </button>
 </div>
 
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+  <div class="content">
+    <h1>Catatan yang Kamu Simpan 💾</h1>
+
+    <div id="savedList" class="saved-list"></div>
+
+    <button class="main-btn back-btn" onclick="goTo(2)">
+      Back
+    </button>
+  </div>
+</div>
+      
 <script>
 let currentPage = 1;
 let activeEmotion = null;
@@ -614,24 +663,20 @@ ${notes}
   URL.revokeObjectURL(url);
 }
 
-function saveNotesToGoogleSheet(){
-  const message = document
-    .getElementById("emotionMessage")
-    .innerText.replace(/“|”/g,"");
+function saveAll(){
+  const data = {
+    date: new Date().toLocaleString("id-ID"),
+    emotion: document.getElementById("emotionTitle").innerText,
+    emoji: document.getElementById("emotionEmoji").innerText,
+    message: document.getElementById("emotionMessage").innerText,
+    notes: document.getElementById("userNotes").value || "(tidak ada catatan)"
+  };
 
-  const notes = document.getElementById("userNotes").value.trim();
+  const saved = JSON.parse(localStorage.getItem("emotionNotes")) || [];
+  saved.push(data);
+  localStorage.setItem("emotionNotes", JSON.stringify(saved));
 
-  if(!notes) return;
-
-  const formData = new FormData();
-  formData.append("message", message);
-  formData.append("notes", notes);
-
-  fetch("https://script.google.com/macros/s/AKfycbziaLxeJldKe248ZxqWoyRd1LIRpK5bshRgiDZCzL8rYnnb84eWP1pBBzYBLpj1Dq87/exec", {
-    method: "POST",
-    body: formData
-  })
-  .catch(() => console.log("Gagal kirim ke Sheet"));
+  alert("Catatan kamu berhasil disimpan 🤍");
 }
 
 function saveAll(){
@@ -660,6 +705,35 @@ function animateMessage(newText){
   }, 600); // tunggu pesan lama selesai fade out
 }
 
+function openSavedPage(){
+  renderSavedNotes();
+  goTo(4);
+}
+
+function renderSavedNotes(){
+  const container = document.getElementById("savedList");
+  const saved = JSON.parse(localStorage.getItem("emotionNotes")) || [];
+
+  container.innerHTML = "";
+
+  if(saved.length === 0){
+    container.innerHTML = "<p style='opacity:.7'>Belum ada catatan yang disimpan.</p>";
+    return;
+  }
+
+  saved.reverse().forEach(item=>{
+    const div = document.createElement("div");
+    div.className = "saved-item";
+    div.innerHTML = `
+      <h3>${item.emoji} ${item.emotion}</h3>
+      <p>${item.message}</p>
+      <p><em>${item.notes}</em></p>
+      <div class="date">${item.date}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
 function playMusic(){
   const music = document.getElementById("bgMusic");
   music.volume = 0;
@@ -679,5 +753,6 @@ function playMusic(){
 </script>
 </body>
 </html>
+
 
 
